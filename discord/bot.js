@@ -22,8 +22,8 @@ bot.on('ready', function (evt) {
     logger.info(bot.username + ' - (' + bot.id + ')');
 });
 
-function sendMessage(bot, channelID, message) {
-    bot.sendMessage({
+async function sendMessage(bot, channelID, message) {
+    await bot.sendMessage({
         to: channelID,
         message: message
     });
@@ -42,6 +42,12 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 } else {
                     api.getPrice(bot, channelID, args, sendMessage);
                 }
+                break;
+            case 'log':
+                api.getLog(bot, channelID, sendMessage);
+                break;
+            case 'stat':
+                api.getStat(bot, channelID, sendMessage);
                 break;
             default:
                 api.getHelp(bot, channelID, sendMessage);

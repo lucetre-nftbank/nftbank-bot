@@ -5,8 +5,8 @@ const bot = new TelegramBot(auth.telegram_token, { polling: true });
 const api = require("../public/api.js");
 api.init();
 
-function sendMessage(bot, channelID, message) {
-    bot.sendMessage(channelID, message);
+async function sendMessage(bot, channelID, message) {
+    await bot.sendMessage(channelID, message);
 }
 
 bot.on('message', (msg) => {
@@ -24,6 +24,12 @@ bot.on('message', (msg) => {
                 } else {
                     api.getPrice(bot, channelID, args, sendMessage);
                 }
+                break;
+            case 'log':
+                api.getLog(bot, channelID, sendMessage);
+                break;
+            case 'stat':
+                api.getStat(bot, channelID, sendMessage);
                 break;
             default:
                 api.getHelp(bot, channelID, sendMessage);
