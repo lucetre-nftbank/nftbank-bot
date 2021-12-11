@@ -1,7 +1,7 @@
-var Discord = require('discord.io');
-var logger = require('winston');
-var auth = require('./auth.json');
+const Discord = require('discord.io');
+const logger = require('winston');
 
+const auth = require('../public/auth.json');
 const api = require("../public/api.js");
 api.init();
 
@@ -12,7 +12,7 @@ logger.add(new logger.transports.Console, {
 logger.level = 'debug';
 
 var bot = new Discord.Client({
-    token: auth.token,
+    token: auth.discord_token,
     autorun: true
 });
 
