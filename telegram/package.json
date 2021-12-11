@@ -1,0 +1,10 @@
+{
+  "name": "nftbank-bot",
+  "version": "1.0.0",
+  "description": "nftbank telegram bot",
+  "main": "bot.js",
+  "author": "nftbank",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.56.0"
+  }
+}
