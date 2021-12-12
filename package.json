@@ -1,0 +1,15 @@
+{
+  "name": "nftbank-bot",
+  "version": "1.0.0",
+  "description": "nftbank telegram bot",
+  "main": "bot.js",
+  "author": "nftbank",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "node-cron": "^3.0.0",
+    "node-telegram-bot-api": "^0.56.0",
+    "request-promise": "^4.2.6",
+    "twitter": "^1.7.1",
+    "winston": "^3.3.3"
+  }
+}

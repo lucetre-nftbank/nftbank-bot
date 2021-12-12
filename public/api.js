@@ -158,4 +158,53 @@ async function getStat(bot, channelID, sendMessage)  {
     sendMessage(bot, channelID, message);
 }
 
-module.exports = { getPrice, getPriceList, getHelp, getLog, getStat, init };
+let topk_punks = [];
+async function getTopKPunks(k = 10) {
+    const MAX_PUNK_ID = 10000;
+    let token_ids = [];
+    for (let i = 1; i < MAX_PUNK_ID; i++) {
+        token_ids.push(String(i));
+    }
+
+    var options = {
+        headers: HEADERS,
+        url: URL + '/estimates/bulk',
+        method: 'POST',
+        body: {
+            asset_contract: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb",
+            token_ids: token_ids,
+            chain_id: "ETHEREUM"
+        },
+        json:true
+    };
+
+    await request.post(options, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+            let data = body.data;
+            let punk_dict = {};
+
+            for (let i = 0; i < data.length; i++) {
+                let eth_price = 0.0;
+                for (let j = 0; j < data[i].estimate.length; j++) {
+                    let estimate = data[i].estimate[j];
+                    if (estimate.currency_symbol == 'ETH') {
+                        eth_price = estimate.estimate_price;
+                        break;
+                    }
+                }
+                punk_dict[data[i].token_id] = eth_price;
+            }
+
+            var items = Object.keys(punk_dict).map(function (key) {
+                return [key, punk_dict[key]];
+            });
+            items.sort((first, second) => {
+                return second[1] - first[1];
+            });
+            topk_punks = items.slice(0, k);
+        }
+    });
+    return topk_punks;
+}
+
+module.exports = { init, getPrice, getPriceList, getHelp, getLog, getStat, getTopKPunks };
